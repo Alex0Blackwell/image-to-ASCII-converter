@@ -79,7 +79,9 @@ class Picture():
             for col in range(0, self.wXh[0], incrementX):
                 (r, g, b) = self.rgb.getpixel((col, row))
                 totalBrightness = r + g + b  # 0-765
-                print(rgbToAnsi(r, g, b)+darkToBright[totalBrightness//70], end='')  # 0->0, 765->10
+                print('\033[07m', end='')  # reverse color
+                # ascii color light gray
+                print(f"\033[47m{rgbToAnsi(r, g, b)+darkToBright[totalBrightness//70]}\033[0m", end='')  # 0->0, 765->10
             print()
 
 
@@ -109,15 +111,14 @@ def main():
         userNum = input("Enter the number: ")
     userNum = int(userNum)
     bruteAnim("Generating your ", "ASCII Image");
-
-    print('\033[47m')  # set the background color
+    print()
     t0 = t.time()
     selectedImage = Picture(possibleImages[userNum-1])
     selectedImage.genAscii()
     print('\033[0m')  # reset colors
-    print("It might look like a bunch of random text now\nbut zoom out to see the picture!")
     timeElapsed = round(t.time() - t0, 2)
     print(f"The image was generated in {timeElapsed} seconds.")
+    print("It might look like a bunch of random text now\nbut zoom out to see the picture!")
 
 
 if __name__ == '__main__':

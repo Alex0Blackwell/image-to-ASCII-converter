@@ -1,5 +1,50 @@
 from PIL import Image
+import time as t
 import glob
+
+
+# making this public considerably speeds up the run time (70% faster)
+colorList = [[(28, 28, 28), '\033[30m'], [(224, 52, 52), '\033[31m'], [(42, 209, 75), '\033[32m'],
+[(219, 141, 46), '\033[33m'], [(53, 48, 217), '\033[34m'], [(156, 43, 227), '\033[35m'],
+[(53, 214, 219), '\033[36m'], [(171, 171, 171), '\033[37m'], [(99, 99, 99), '\033[90m'],
+[(255, 163, 163), '\033[91m'], [(130, 255, 145), '\033[92m'], [(255, 251, 5), '\033[93m'],
+[(150, 227, 255), '\033[94m'], [(255, 140, 230), '\033[95m'], [(204, 249, 255), '\033[96m']]
+
+def rgbToAnsi(r, g, b):
+    # assume minDifference is the first pixel
+    ansiIndex = 0
+    minDifference = abs(colorList[0][0][0] - r)
+    minDifference += abs(colorList[0][0][1] - g)
+    minDifference += abs(colorList[0][0][2] - b)
+
+    for i in range(1, len(colorList)):
+        thisDifference = abs(colorList[i][0][0] - r)
+        thisDifference += abs(colorList[i][0][1] - g)
+        thisDifference += abs(colorList[i][0][2] - b)
+        if(thisDifference < minDifference):
+            minDifference = thisDifference
+            ansiIndex = i
+
+
+    return colorList[ansiIndex][1]
+
+
+    # black='\033[30m'
+    # red='\033[31m'
+    # green='\033[32m'
+    # orange='\033[33m'
+    # blue='\033[34m'
+    # purple='\033[35m'
+    # cyan='\033[36m'
+    # lightgrey='\033[37m'
+    # darkgrey='\033[90m'
+    # lightred='\033[91m'
+    # lightgreen='\033[92m'
+    # yellow='\033[93m'
+    # lightblue='\033[94m'
+    # pink='\033[95m'
+    # lightcyan='\033[96m'
+
 
 
 class Picture():
@@ -20,7 +65,7 @@ class Picture():
         """ The method to print the ASCII image. """
         darkToBright = ['#', '$', '&', '%', 'w', 'x', '=', '+', '*', '~', '`']
 
-        imgSize = 250  # max number of columns/rows
+        imgSize = 160  # max number of columns/rows
         if(self.wXh[0] >= self.wXh[1]):
             # landscape
             xStep = imgSize
@@ -36,8 +81,8 @@ class Picture():
         for row in range(0, self.wXh[1], incrementY):
             for col in range(0, self.wXh[0], incrementX):
                 (r, g, b) = self.rgb.getpixel((col, row))
-                totalBrightness = r + g + b;  # 0-765
-                print(darkToBright[totalBrightness//70], end='')  # 0->0, 765->10
+                totalBrightness = r + g + b  # 0-765
+                print(rgbToAnsi(r, g, b)+darkToBright[totalBrightness//70], end='')  # 0->0, 765->10
             print()
 
 
@@ -67,9 +112,16 @@ def main():
         userNum = input("Enter the number: ")
     userNum = int(userNum)
 
+    print('\033[47m')  # set the background color
+    t0 = t.time()
     selectedImage = Picture(possibleImages[userNum-1])
     selectedImage.genAscii()
+    print('\033[0m')  # reset colors
     print("It might look like a bunch of random text now\nbut zoom out to see the picture!")
+    timeElapsed = round(t.time() - t0, 2)
+    print(f"The image was generated in {timeElapsed} seconds.")
+    # color = Colors(43, 227, 98)
+    # print(color.rgbToAnsi()+ "Testing red")
 
 
 if __name__ == '__main__':

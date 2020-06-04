@@ -1,12 +1,27 @@
 from PIL import Image
 import time as t
-import glob
+import glob, random
 
 
-# making this public considerably speeds up the run time (70% faster)
+def bruteAnim(sentence, word):
+    letters = ['a','c','d','f','g','i','k','m','o','q','s','u','w','y']
+    write = sentence+''
+    for a in range(0, len(word)):
+        for b in range(0,5):
+            print(write+letters[random.randint(0,len(letters)-1)], end='\r')
+            t.sleep(0.05)
+        write = write + word[a]
+    print(sentence+word)
+
+
+### making this public considerably speeds up the run time (70% faster)
+# black:\033[30m, red:\033[31m, green:\033[32m ,orange:\033[33m
+# blue:\033[34m, purple:\033[35m, cyan:\033[36m ,lightgrey:\033[37m
+# darkgrey:\033[90m, lightred:\033[91m, lightgreen:\033[92m, yellow:\033[93m
+# lightblue:\033[94m, pink:\033[95m, lightcyan:\033[96m
 colorList = [[(28, 28, 28), '\033[30m'], [(224, 52, 52), '\033[31m'], [(42, 209, 75), '\033[32m'],
 [(219, 141, 46), '\033[33m'], [(53, 48, 217), '\033[34m'], [(156, 43, 227), '\033[35m'],
-[(53, 214, 219), '\033[36m'], [(171, 171, 171), '\033[37m'], [(99, 99, 99), '\033[90m'],
+[(53, 214, 219), '\033[36m'], [(171, 171, 171), '\033[90m'], [(99, 99, 99), '\033[90m'],
 [(255, 163, 163), '\033[91m'], [(130, 255, 145), '\033[92m'], [(255, 251, 5), '\033[93m'],
 [(150, 227, 255), '\033[94m'], [(255, 140, 230), '\033[95m'], [(204, 249, 255), '\033[96m']]
 
@@ -27,24 +42,6 @@ def rgbToAnsi(r, g, b):
 
 
     return colorList[ansiIndex][1]
-
-
-    # black='\033[30m'
-    # red='\033[31m'
-    # green='\033[32m'
-    # orange='\033[33m'
-    # blue='\033[34m'
-    # purple='\033[35m'
-    # cyan='\033[36m'
-    # lightgrey='\033[37m'
-    # darkgrey='\033[90m'
-    # lightred='\033[91m'
-    # lightgreen='\033[92m'
-    # yellow='\033[93m'
-    # lightblue='\033[94m'
-    # pink='\033[95m'
-    # lightcyan='\033[96m'
-
 
 
 class Picture():
@@ -111,6 +108,7 @@ def main():
                 print(f"Make sure the number is between 0 and {len(possibleImages)}")
         userNum = input("Enter the number: ")
     userNum = int(userNum)
+    bruteAnim("Generating your ", "ASCII Image");
 
     print('\033[47m')  # set the background color
     t0 = t.time()
@@ -120,8 +118,6 @@ def main():
     print("It might look like a bunch of random text now\nbut zoom out to see the picture!")
     timeElapsed = round(t.time() - t0, 2)
     print(f"The image was generated in {timeElapsed} seconds.")
-    # color = Colors(43, 227, 98)
-    # print(color.rgbToAnsi()+ "Testing red")
 
 
 if __name__ == '__main__':

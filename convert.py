@@ -3,7 +3,12 @@ import glob
 
 
 class Picture():
-    """docstring for Picture."""
+    """
+    Used for converting an jpg or png image to a text image.
+
+    Attributes:
+        filename (string): The location of the jpg/png file
+    """
 
     def __init__(self, filename):
         self.ref = Image.open(filename)
@@ -12,27 +17,27 @@ class Picture():
 
 
     def genAscii(self):
+        """ The method to print the ASCII image. """
         darkToBright = ['#', '$', '&', '%', 'w', 'x', '=', '+', '*', '~', '`']
 
+        imgSize = 250  # max number of columns/rows
         if(self.wXh[0] >= self.wXh[1]):
             # landscape
-            xStep = 150
-            yStep = int(self.wXh[1]*150/self.wXh[0])
+            xStep = imgSize
+            yStep = int(self.wXh[1]*imgSize/self.wXh[0])
         else:
-            xStep = int(self.wXh[0]*150/self.wXh[1])
-            yStep = 150
+            # portrait
+            xStep = int(self.wXh[0]*imgSize/self.wXh[1])
+            yStep = imgSize
 
         incrementX = self.wXh[0] // xStep
-        incrementY = self.wXh[1] // (yStep//2)
+        incrementY = self.wXh[1] // (yStep//2)  # divide by 2 because of terminal line height
 
         for row in range(0, self.wXh[1], incrementY):
-            # for every 'increment'th column
             for col in range(0, self.wXh[0], incrementX):
-                # for every 'increment'th row
                 (r, g, b) = self.rgb.getpixel((col, row))
                 totalBrightness = r + g + b;  # 0-765
-                #index = totalBrightness // 70  # 0->0, 765->10
-                print(darkToBright[totalBrightness//70], end='')
+                print(darkToBright[totalBrightness//70], end='')  # 0->0, 765->10
             print()
 
 
@@ -64,6 +69,7 @@ def main():
 
     selectedImage = Picture(possibleImages[userNum-1])
     selectedImage.genAscii()
+    print("It might look like a bunch of random text now\nbut zoom out to see the picture!")
 
 
 if __name__ == '__main__':

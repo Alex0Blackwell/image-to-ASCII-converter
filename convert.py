@@ -86,7 +86,7 @@ class Picture():
 
 
 def main():
-    exts = ["jpg", "jpeg", "png", "PNG"]
+    exts = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG"]
     possibleImages = []
     imageNames = []
 

@@ -2,17 +2,18 @@
 
 ## Table of contents
 * [Overview](#overview)
-* [Examples (Screenshots of Terminal)](#examples (screenshots of terminal))
+* [Examples](#examples)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Supported Image Types](#supported image types)
+* [Supported Image Types](#supported-image-types)
 * [Limitations](#limitations)
 
 ## Overview
 This program takes images from the *./imgs/* folder and makes then into coloured ascii text drawings.  
 There are photos that are already in the *./imgs/* folder and you can choose from these default photos; however, you can also add your own photos to the folder and the newly-added photo can be selected in the program. Additionally, you can select the image to be rendered in grayscale, 4-bit colour, or True Colour.
 
-## Examples (Screenshots of Terminal)
+## Examples
+### Screenshots of Terminal
 
   > Mona Lisa
 

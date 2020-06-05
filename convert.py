@@ -1,6 +1,6 @@
 from PIL import Image
 import time as t
-import glob, random
+import glob, random, curses
 
 
 def bruteAnim(sentence, word):
@@ -26,6 +26,7 @@ colorList = [[(28, 28, 28), '\033[30m'], [(224, 52, 52), '\033[31m'], [(42, 209,
 [(150, 227, 255), '\033[94m'], [(255, 140, 230), '\033[95m'], [(204, 249, 255), '\033[96m']]
 
 def rgbToAnsi(r, g, b):
+    """ convert rgb to ansi (closest of 15 default colours) """
     # assume minDifference is the first pixel
     ansiIndex = 0
     minDifference = abs(colorList[0][0][0] - r)
@@ -40,8 +41,8 @@ def rgbToAnsi(r, g, b):
             minDifference = thisDifference
             ansiIndex = i
 
-
     return colorList[ansiIndex][1]
+
 
 
 class Picture():
@@ -52,7 +53,8 @@ class Picture():
         filename (string): The location of the jpg/png file
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename, colourChoice):
+        self.colourChoice = colourChoice
         self.ref = Image.open(filename)
         self.rgb = self.ref.convert("RGB")
         self.wXh = self.ref.size
@@ -60,7 +62,7 @@ class Picture():
 
     def genAscii(self):
         """ The method to print the ASCII image. """
-        darkToBright = ['#', '$', '&', '%', 'w', 'x', '=', '+', '*', '~', '`']
+        darkToBright = ['#', '$', '&', '%', 'x', 'v', '=', '+', '*', '~', '`']
 
         imgSize = 160  # max number of columns/rows
         if(self.wXh[0] >= self.wXh[1]):
@@ -79,13 +81,20 @@ class Picture():
             for col in range(0, self.wXh[0], incrementX):
                 (r, g, b) = self.rgb.getpixel((col, row))
                 totalBrightness = r + g + b  # 0-765
-                print('\033[07m', end='')  # reverse color
                 # ascii color light gray
-                print(f"\033[47m{rgbToAnsi(r, g, b)+darkToBright[totalBrightness//70]}\033[0m", end='')  # 0->0, 765->10
+                if(self.colourChoice == 1):  # grayscale
+                    print(darkToBright[totalBrightness//70], end='')
+                else:
+                    print('\033[07m', end='')  # reverse color
+                    if(self.colourChoice == 2):  # 8-bit
+                        print(f"\033[47m{rgbToAnsi(r, g, b)+darkToBright[totalBrightness//70]}\033[0m", end='')
+                    elif(self.colourChoice == 3):  # true colour
+                        print(f"\x1b[38;2;{r};{g};{b}m{darkToBright[totalBrightness//70]}\x1b[0m", end='')
             print()
 
 
 def main():
+
     exts = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG"]
     possibleImages = []
     imageNames = []
@@ -96,7 +105,7 @@ def main():
     for img in possibleImages:
         imageNames.append(img.split('imgs/')[1].split('.')[0])
 
-    print("Hello, type the associated number to make an ASCII image of one of the following images. ")
+    print("Hello, type the associated number to make an ASCII image of one of the following images.")
     c = 1
     for img in imageNames:
         print(f"({c}) {img} image")
@@ -104,16 +113,31 @@ def main():
     print("If you don't see your image listed, drop it into the ./imgs/ folder")
 
     userNum = ""
-    while(not (userNum.isdigit() and 0 <= int(userNum) <= len(possibleImages))):
+    while(not (userNum.isdigit() and 1 <= int(userNum) <= len(possibleImages))):
         if(userNum.isdigit()):
-            if(not(0 <= int(userNum) <= len(possibleImages))):
-                print(f"Make sure the number is between 0 and {len(possibleImages)}")
+            if(not(1 <= int(userNum) <= len(possibleImages))):
+                print(f"Make sure the number is between or equal to 1 and {len(possibleImages)}")
         userNum = input("Enter the number: ")
     userNum = int(userNum)
+
+    print("Type the associated number to choose what type of colour to use.")
+    colourChoices = ["Grayscale", "8-Bit Colour", "True Colour"]
+    c = 1
+    for type in colourChoices:
+        print(f"({c}) {type}")
+        c += 1
+
+    colorChoice = ""
+    while(not (colorChoice.isdigit() and 1 <= int(colorChoice) <= 3)):
+        if(colorChoice.isdigit()):
+            if(not(1 <= int(colorChoice) <= 3)):
+                print("Make sure the number is between or equal to 1 and 3")
+        colorChoice = input("Enter the number: ")
+    colorChoice = int(colorChoice)
     bruteAnim("Generating your ", "ASCII Image");
     print()
     t0 = t.time()
-    selectedImage = Picture(possibleImages[userNum-1])
+    selectedImage = Picture(possibleImages[userNum-1], colorChoice)
     selectedImage.genAscii()
     print('\033[0m')  # reset colors
     timeElapsed = round(t.time() - t0, 2)

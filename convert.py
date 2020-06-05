@@ -86,7 +86,7 @@ class Picture():
                     print(darkToBright[totalBrightness//70], end='')
                 else:
                     print('\033[07m', end='')  # reverse color
-                    if(self.colourChoice == 2):  # 8-bit
+                    if(self.colourChoice == 2):  # 4-bit
                         print(f"\033[47m{rgbToAnsi(r, g, b)+darkToBright[totalBrightness//70]}\033[0m", end='')
                     elif(self.colourChoice == 3):  # true colour
                         print(f"\x1b[38;2;{r};{g};{b}m{darkToBright[totalBrightness//70]}\x1b[0m", end='')
@@ -94,13 +94,15 @@ class Picture():
 
 
 def main():
-
-    exts = ["jpg", "jpeg", "JPG", "JPEG", "png", "PNG"]
+    # supported file extensions
+    exts = ["jpg", "jpeg", "png", "gif", "bmp", "eps", "gif", "icns", "ico",
+    "im", "msp", "pcx", "ppm", "sgi", "tiff"]
     possibleImages = []
     imageNames = []
 
     for ext in exts:
         possibleImages += glob.glob(f"imgs/*.{ext}")
+        possibleImages += glob.glob(f"imgs/*.{ext.upper()}")
 
     for img in possibleImages:
         imageNames.append(img.split('imgs/')[1].split('.')[0])
@@ -121,7 +123,7 @@ def main():
     userNum = int(userNum)
 
     print("Type the associated number to choose what type of colour to use.")
-    colourChoices = ["Grayscale", "8-Bit Colour", "True Colour"]
+    colourChoices = ["Grayscale", "4-Bit Colour", "True Colour"]
     c = 1
     for type in colourChoices:
         print(f"({c}) {type}")

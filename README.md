@@ -9,6 +9,16 @@
 This program takes images from the *./imgs/* folder and makes then into coloured ascii text drawings.  
 There are photos that are already in the *./imgs/* folder and you can choose from these default photos; however, you can also add your own photos to the folder and the newly-added photo can be selected in the program.
 
+### Examples
+
+  > Mona Lisa
+
+![Screenshot](pictures/monaLisaAscii.png "A Masterpiece!")
+
+  > Aang from Avatar: The Last Airbender
+
+![Screenshot](pictures/aangAscii.png "The A stands for Ascii!")
+
 
 ## Technologies
 - **Python 3.8**

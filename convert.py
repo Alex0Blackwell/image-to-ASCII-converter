@@ -14,11 +14,8 @@ def bruteAnim(sentence, word):
     print(sentence+word)
 
 
-### making this public considerably speeds up the run time (70% faster)
-# black:\033[30m, red:\033[31m, green:\033[32m ,orange:\033[33m
-# blue:\033[34m, purple:\033[35m, cyan:\033[36m ,lightgrey:\033[37m
-# darkgrey:\033[90m, lightred:\033[91m, lightgreen:\033[92m, yellow:\033[93m
-# lightblue:\033[94m, pink:\033[95m, lightcyan:\033[96m
+# black, red, green, orange, blue, purple, cyan, lightgrey
+# darkgrey, lightred, lightgreen, yellow, lightblue, pink, lightcyan
 colorList = [[(28, 28, 28), '\033[30m'], [(224, 52, 52), '\033[31m'], [(42, 209, 75), '\033[32m'],
 [(219, 141, 46), '\033[33m'], [(53, 48, 217), '\033[34m'], [(156, 43, 227), '\033[35m'],
 [(53, 214, 219), '\033[36m'], [(171, 171, 171), '\033[90m'], [(99, 99, 99), '\033[90m'],

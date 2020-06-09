@@ -61,4 +61,4 @@ To run this project, install the requirements and then run the program:
 - rendering photos in True Colour slows down the terminal until *clear* is called
 
 ## License
-Liscensed under the [GNU General Public License v3.0](LICENSE)
+Licensed under the [GNU General Public License v3.0](LICENSE)

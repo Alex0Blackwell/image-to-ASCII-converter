@@ -15,13 +15,17 @@ There are photos that are already in the *./imgs/* folder and you can choose fro
 ## Examples
 ### Screenshots of Terminal
 
-  > Mona Lisa
+> Mona Lisa
 
-![Screenshot](pictures/monaLisaAscii.png "A Masterpiece!")
+[![Video](.pictures/monaLisaAscii.png "View it on my website!")](https://alex0blackwell.github.io/)
 
-  > Aang from Avatar: The Last Airbender
+> Aang from Avatar: The Last Airbender
 
-![Screenshot](pictures/aangAscii.png "The A stands for Ascii!")
+[![Video](.pictures/aangAscii.png "View it on my website!")](https://alex0blackwell.github.io/)
+
+> Example of the program running
+
+[![Video](.pictures/ascii-art.gif "View it on my website!")](https://alex0blackwell.github.io/)
 
 
 ## Technologies
@@ -61,4 +65,4 @@ To run this project, install the requirements and then run the program:
 - rendering photos in True Colour slows down the terminal until *clear* is called
 
 ## License
-Liscensed under the [GNU General Public License v3.0](LICENSE)
+Licensed under the [GNU General Public License v3.0](LICENSE)
